@@ -1,6 +1,5 @@
 # module to run the tests for Damivis's snake problem
-from utils import numberOfAvailableDifferentPaths
-from utils import Board, Snake
+from utils import SnakeSolver
 
 # define test inputs:
 test1 = {'board': [4,3],
@@ -24,11 +23,9 @@ tests = [test1, test2, test3]
 for test in tests:
 
     # initialize board and snake
-    board = Board(test['board'])
-    snake = Snake(test['snake'])
-    # todo: assert depth constraints
+    snake = SnakeSolver(test['board'], test['snake'])
 
-    result = numberOfAvailableDifferentPaths(board, snake, test['depth'])
+    result = snake.numberOfAvailableDifferentPaths(test['depth'])
 
     # todo: print inputs
     if result == test['expect_result']:
