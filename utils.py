@@ -48,9 +48,8 @@ class SnakeSolver:
         return snake
 
     # check if a block is within the grid limits
-    @staticmethod
     def isBlockInGrid(self, block):
-        if (0 <= block[0] < self.board[0]) and (0 <= block[1] < self.board[1]):
+        if (0 <= block[0] < self._board[0]) and (0 <= block[1] < self._board[1]):
             return True
         else:
             return False
@@ -61,19 +60,19 @@ class SnakeSolver:
         if depth <= 0:
             return 1
         else:
-            up    = [snake_state[0][0],snake_state[0][1]+1]
-            down  = [snake_state[0][0],snake_state[0][1]-1]
-            left  = [snake_state[0][0]+1,snake_state[0][1]]
-            right = [snake_state[0][0]-1,snake_state[0][1]]
-            # block in grid and not in snake
-            if self.isBlockInGrid(up) and up not in snake_state[:-1]:
-                npaths += self._solve_snake(up+snake_state[:-1], depth-1)
-            if self.isBlockInGrid(down) and down not in snake_state[:-1]:
-                npaths += self._solve_snake(down+snake_state[:-1], depth-1)
-            if self.isBlockInGrid(left) and left not in snake_state[:-1]:
-                npaths += self._solve_snake(left+snake_state[:-1], depth-1)
-            if self.isBlockInGrid(right) and right not in snake_state[:-1]:
-                npaths += self._solve_snake(right+snake_state[:-1], depth-1)
+            up    = [snake_state[-1][0],snake_state[-1][1]+1]
+            down  = [snake_state[-1][0],snake_state[-1][1]-1]
+            left  = [snake_state[-1][0]+1,snake_state[-1][1]]
+            right = [snake_state[-1][0]-1,snake_state[-1][1]]
+            snake_state.pop(0) # tailess snake
+
+            for next_cell in [up, down, left, right]:
+                # block in grid and not in snake
+                if self.isBlockInGrid(next_cell) and next_cell not in snake_state:
+                    next_state = snake_state.copy()
+                    next_state.append(next_cell)
+                    npaths += self._solve_snake(next_state, depth-1)
+                    next_state.clear()
                 
             return npaths
 
@@ -84,8 +83,9 @@ class SnakeSolver:
 
         # run recursive paths
         # send a copy of the initial snake to avoid compromising other braches of the recursion
-        npaths = self._solve_snake(self._snake.copy(), depth)
-
-        # compute module
+        snake_copy = self._snake.copy()
+        # reversing is needed for efficiency, could also use collections.deque
+        snake_copy.reverse() # reverses in-place
+        npaths = self._solve_snake(snake_copy, depth)
 
         return npaths

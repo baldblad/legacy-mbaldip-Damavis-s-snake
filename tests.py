@@ -17,9 +17,10 @@ test3 = {'board': [10,10],
          'depth': 4,
          'expect_result': 81}
 
-tests = [test1, test2, test3]
+tests = [test1, test2, test3] # remove from list to choose a subset of tests
 
 # run the tests:
+i=1
 for test in tests:
 
     # initialize board and snake
@@ -27,8 +28,15 @@ for test in tests:
 
     result = snake.numberOfAvailableDifferentPaths(test['depth'])
 
-    # todo: print inputs
+    # print inputs and result
+    print('\nTest{}:'.format(i))
+    print('\tBoard: ', test['board'])
+    print('\tSnake: ', test['snake'])
+    print('\tDepth: ', test['depth'])
+    print('Expected result: ', test['expect_result'])
     if result == test['expect_result']:
-        print('\nTest PASSED with result: ', result)
+        print('Test PASSED with result: ', result)
     else:
-        print('\nTest FAILED with result: ', result)
+        print('Test FAILED with result: ', result)
+
+    i+=1
