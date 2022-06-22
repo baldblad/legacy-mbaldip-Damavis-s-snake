@@ -56,16 +56,35 @@ class SnakeSolver:
             return False
     
     # Recursive solving for the snake problem
-    def _solve_snake(depth):
-        return
+    def _solve_snake(self, snake_state, depth):
+        npaths = 0
+        if depth <= 0:
+            return 1
+        else:
+            up    = [snake_state[0][0],snake_state[0][1]+1]
+            down  = [snake_state[0][0],snake_state[0][1]-1]
+            left  = [snake_state[0][0]+1,snake_state[0][1]]
+            right = [snake_state[0][0]-1,snake_state[0][1]]
+            # block in grid and not in snake
+            if self.isBlockInGrid(up) and up not in snake_state[:-1]:
+                npaths += self._solve_snake(up+snake_state[:-1], depth-1)
+            if self.isBlockInGrid(down) and down not in snake_state[:-1]:
+                npaths += self._solve_snake(down+snake_state[:-1], depth-1)
+            if self.isBlockInGrid(left) and left not in snake_state[:-1]:
+                npaths += self._solve_snake(left+snake_state[:-1], depth-1)
+            if self.isBlockInGrid(right) and right not in snake_state[:-1]:
+                npaths += self._solve_snake(right+snake_state[:-1], depth-1)
+                
+            return npaths
 
     def numberOfAvailableDifferentPaths(self, depth):
-        # todo: implement recursive function to solve the Damavis's snake problem
         # assert depth condition
         if not(1 <= depth <= 20):
             raise ValueError('Depth must be between 1 and 20')
+
         # run recursive paths
-        npaths = self._solve_snake(depth)
+        # send a copy of the initial snake to avoid compromising other braches of the recursion
+        npaths = self._solve_snake(self._snake.copy(), depth)
 
         # compute module
 
