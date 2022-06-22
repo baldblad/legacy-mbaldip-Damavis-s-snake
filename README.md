@@ -14,3 +14,10 @@ snake cells should have pairwise different coordinates), and crossing the board'
 The path is a sequence of characters L, R, D, and U(corresponding to left, right, down, and up,
 respectively) describing the movements of snake's head on each turn. 
 *How many distinct valid paths of length p can the snake make on the board?*
+
+
+### How to run?
+In order to run the code just type the following in the terminal:
+```
+python3 tests.py
+```
